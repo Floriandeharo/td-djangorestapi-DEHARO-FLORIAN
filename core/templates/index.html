@@ -1,0 +1,22 @@
+<!-- core/templates/index.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion de Recherche</title>
+    <!-- Charger Bootstrap via CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Bienvenue dans la Gestion de Recherche</h1>
+    <a href="{% url 'chercheur_form' %}">Ajouter un Chercheur</a>
+    <a href="{% url 'projet_form' %}">Ajouter un Projet</a>
+    <a href="{% url 'publication_form' %}">Ajouter une Publication</a>
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+###
+### Requêtes pour tester l'API
+###
+
+###
+### Chercheurs
+###
+
+# GET - Récupérer tous les chercheurs
+GET http://localhost:8000/api/chercheurs/
+
+# POST - Créer un nouveau chercheur
+POST http://localhost:8000/api/chercheurs/
+Content-Type: application/json
+
+{
+    "nom": "Alice",
+    "specialite": "Informatique"
+}
+
+# GET - Récupérer un chercheur spécifique par ID (remplacez <id> par l'ID réel)
+GET http://localhost:8000/api/chercheurs/<id>/
+
+# PUT - Mettre à jour un chercheur spécifique par ID
+PUT http://localhost:8000/api/chercheurs/<id>/
+Content-Type: application/json
+
+{
+    "nom": "Alice Doe",
+    "specialite": "Informatique avancée"
+}
+
+# DELETE - Supprimer un chercheur spécifique par ID
+DELETE http://localhost:8000/api/chercheurs/<id>/
+
+
+###
+### Projets de Recherche
+###
+
+# GET - Récupérer tous les projets de recherche
+GET http://localhost:8000/api/projets/
+
+# POST - Créer un nouveau projet de recherche
+POST http://localhost:8000/api/projets/
+Content-Type: application/json
+
+{
+    "titre": "Projet A",
+    "description": "Description du Projet A",
+    "date_debut": "2024-06-27",
+    "date_fin_prevue": "2025-06-27",
+    "chef_de_projet": <ID du chercheur>
+}
+
+# GET - Récupérer un projet de recherche spécifique par ID
+GET http://localhost:8000/api/projets/<id>/
+
+# PUT - Mettre à jour un projet de recherche spécifique par ID
+PUT http://localhost:8000/api/projets/<id>/
+Content-Type: application/json
+
+{
+    "titre": "Projet A - Mis à jour",
+    "description": "Description mise à jour du Projet A"
+}
+
+# DELETE - Supprimer un projet de recherche spécifique par ID
+DELETE http://localhost:8000/api/projets/<id>/
+
+
+###
+### Publications
+###
+
+# GET - Récupérer toutes les publications
+GET http://localhost:8000/api/publications/
+
+# POST - Créer une nouvelle publication
+POST http://localhost:8000/api/publications/
+Content-Type: application/json
+
+{
+    "titre": "Publication 1",
+    "resume": "Résumé de la Publication 1",
+    "date_publication": "2024-06-27",
+    "projet_associé": <ID du projet>
+}
+
+# GET - Récupérer une publication spécifique par ID
+GET http://localhost:8000/api/publications/<id>/
+
+# PUT - Mettre à jour une publication spécifique par ID
+PUT http://localhost:8000/api/publications/<id>/
+Content-Type: application/json
+
+{
+    "titre": "Publication 1 - Mise à jour",
+    "resume": "Résumé mis à jour de la Publication 1"
+}
+
+# DELETE - Supprimer une publication spécifique par ID
+DELETE http://localhost:8000/api/publications/<id>/

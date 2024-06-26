@@ -1,0 +1,85 @@
+<!-- core/templates/publications.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Liste des Publications{% endblock %}
+
+{% block content %}
+
+
+    <div class="table-responsive">
+        <h1>Liste des Publications</h1>
+
+           
+    <form id="filterForm" method="get" action="{% url 'liste_publications' %}">
+        {{ form.as_p }}
+        <div class="row">
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary">Filtrer</button>
+                </div>
+        <div class="col-md-6">
+
+            <a href="{% url 'ajouter_publication' %}" class="btn btn-primary">Ajouter Publication</a>
+            </div>
+        </div>
+    </form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Résumé</th>
+                    <th>Date de Publication</th>
+                    <th>Projet Associé</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for publication in publications %}
+                <tr>
+                    <td>{{ publication.titre }}</td>
+                    <td>{{ publication.resume }}</td>
+                    <td>{{ publication.date_publication }}</td>
+                    <td>{{ publication.projet_associe.titre }}</td>
+                    <td>
+                        <a href="{% url 'modifier_publication' publication.id %}" class="btn btn-primary">Modifier</a>
+                        <form method="post" action="{% url 'supprimer_publication' publication.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </form>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Aucune publication trouvée.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+<script>
+    // JavaScript pour soumettre le formulaire de filtre sans rechargement de page
+    document.getElementById('filterForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = this;
+        const formData = new FormData(form);
+        const url = form.getAttribute('action');
+        const params = new URLSearchParams(formData);
+
+        fetch(`${url}?${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newContent = doc.querySelector('body').innerHTML;
+            document.querySelector('.table-responsive').innerHTML = newContent;
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Liste des Projets de Recherche{% endblock %}
+
+{% block content %}
+<div class="table-responsive">
+    <h1>Liste des Projets de Recherche</h1>
+    
+        <form id="filterForm" method="get" action="{% url 'liste_projets' %}">
+            {{ form.as_p }}
+    <div class="row">
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+            </div>
+    <div class="col-md-6">
+
+        <a href="{% url 'ajouter_projet' %}" class="btn btn-success">Ajouter Projet</a>
+        </div>
+    </div>
+        </form>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Date de Début</th>
+                <th>Date de Fin Prévue</th>
+                <th>Chef de Projet</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for projet in projets %}
+            <tr>
+                <td>{{ projet.titre }}</td>
+                <td>{{ projet.date_debut }}</td>
+                <td>{{ projet.date_fin_prevue }}</td>
+                <td>{{ projet.chef_de_projet.nom }}</td>
+                <td>
+                    <a href="{% url 'modifier_projet' projet.id %}" class="btn btn-primary">Modifier</a>
+                    
+                    <!-- Utilisation de la méthode POST pour le formulaire de suppression -->
+                    <form method="post" action="{% url 'supprimer_projet' projet.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Aucun projet trouvé.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // JavaScript pour soumettre le formulaire de filtre sans rechargement de page
+    document.getElementById('filterForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = this;
+        const formData = new FormData(form);
+        const url = form.getAttribute('action');
+        const params = new URLSearchParams(formData);
+
+        fetch(`${url}?${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newContent = doc.querySelector('body').innerHTML;
+            document.querySelector('.table-responsive').innerHTML = newContent;
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+
+{% endblock %}
